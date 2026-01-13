@@ -1,11 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './service/auth.service';
+import { AppRoutingModule } from "./app-routing-module";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.html',
   standalone: false,
-  styleUrl: './app.scss'
+  template: '<router-outlet></router-outlet>'
 })
-export class App {
-  protected readonly title = signal('credencia-frontend');
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    // Tenta restaurar a sessão ao iniciar (Refresh F5)
+    this.authService.checkSession().subscribe();
+  }
 }
