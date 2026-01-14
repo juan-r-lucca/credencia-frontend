@@ -8,26 +8,26 @@ import { HomeComponent } from './home.component';
 import { AppRoutingModule } from './app-routing-module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
-
+import { MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
+import { CInputComponent } from './generic-components/c-input/c-input.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent
-  ],
+  declarations: [AppComponent, LoginComponent, HomeComponent, CInputComponent],
   imports: [
     // Módulos do Angular
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule, 
-    FormsModule
+    HttpClientModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [
     // Registrando os Interceptors
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

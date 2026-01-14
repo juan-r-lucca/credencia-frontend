@@ -7,12 +7,30 @@ import { LoginRequest } from '../app/model/auth.models';
   selector: 'app-login',
   standalone: false,
   template: `
-    <div style="padding: 2rem;">
-      <h2>Login</h2>
-      <input [(ngModel)]="loginData.email" placeholder="Email" style="display:block; margin: 10px 0;">
-      <input [(ngModel)]="loginData.password" type="password" placeholder="Senha" style="display:block; margin: 10px 0;">
-      <button (click)="onLogin()">Entrar</button>
-      <p style="color: red" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <div style="padding: 2rem; max-width: 400px; margin: auto;">
+      <app-c-input
+        [(ngModel)]="loginData.email"
+        [icon]="'person'"
+        [fill]="false"
+        [label]="'Email'"
+        [placeholder]="'usuario@email.com'"
+        [hint]="'Insira um e-mail válido'">
+      </app-c-input>
+
+      <app-c-input
+        [(ngModel)]="loginData.password"
+        [type]="'password'"
+        [fill]="false"
+        [label]="'Senha'"
+        [placeholder]="'Digite sua senha'"
+        [hint]="'Insira uma senha válida'">
+      </app-c-input>
+
+      <div style="margin-top: 1rem;">
+        <button mat-raised-button color="primary" (click)="onLogin()">Entrar</button>
+      </div>
+
+      <p style="color: red; margin-top: 10px;" *ngIf="errorMessage">{{ errorMessage }}</p>
     </div>
   `
 })
@@ -23,6 +41,11 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
+    if(!this.loginData.email || !this.loginData.password) {
+        this.errorMessage = 'Preencha todos os campos';
+        return;
+    }
+
     this.authService.login(this.loginData).subscribe({
       next: () => this.router.navigate(['/home']),
       error: () => this.errorMessage = 'Credenciais Inválidas'
